@@ -29,6 +29,35 @@ public:
         return dp[index][buy]=profit;
         
         
+    } 
+    
+    int solveTab(vector<int>& prices,int fee){ 
+        int n = prices.size();
+        vector<vector<int>> dp(n+1,vector<int>(2,0)); 
+        
+        for(int index = n-1;index>=0;index--){ 
+            int profit = 0;
+            for(int buy=0;buy<=1;buy++){ 
+                if(buy==1){
+                    int buyKaro = -prices[index] + dp[index+1][0]; 
+                    int skip = 0 + dp[index+1][1]; 
+                    
+                    profit = max(buyKaro,skip);
+                } 
+                
+                else{
+                    int sell = prices[index] - fee + dp[index+1][1]; 
+                    int skip = 0 + dp[index+1][0]; 
+                    
+                    profit = max(sell,skip);
+                } 
+                
+                dp[index][buy] = profit;
+                
+            } 
+            
+        } 
+        return dp[0][1];
     }
     
     
@@ -37,9 +66,9 @@ public:
     
     
     int maxProfit(vector<int>& prices, int fee) { 
-        int n = prices.size();
-        vector<vector<int>> dp(n+1,vector<int>(2,-1)); 
+        //int n = prices.size();
+        //vector<vector<int>> dp(n+1,vector<int>(2,-1)); 
         
-        return solveMem(0,1,prices,dp,fee);
+        return solveTab(prices,fee);
     }
 };
