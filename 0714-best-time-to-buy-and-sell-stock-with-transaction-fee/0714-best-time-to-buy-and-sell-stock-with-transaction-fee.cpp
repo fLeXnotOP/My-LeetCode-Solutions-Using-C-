@@ -31,33 +31,35 @@ public:
         
     } 
     
-    int solveTab(vector<int>& prices,int fee){ 
+    int solveTabSO(vector<int>& prices,int fee){ 
         int n = prices.size();
-        vector<vector<int>> dp(n+1,vector<int>(2,0)); 
+         
+        vector<int> curr(2,0); 
+        vector<int> next(2,0);
         
         for(int index = n-1;index>=0;index--){ 
             int profit = 0;
             for(int buy=0;buy<=1;buy++){ 
                 if(buy==1){
-                    int buyKaro = -prices[index] + dp[index+1][0]; 
-                    int skip = 0 + dp[index+1][1]; 
+                    int buyKaro = -prices[index] + next[0]; 
+                    int skip = 0 + next[1]; 
                     
                     profit = max(buyKaro,skip);
                 } 
                 
                 else{
-                    int sell = prices[index] - fee + dp[index+1][1]; 
-                    int skip = 0 + dp[index+1][0]; 
+                    int sell = prices[index] - fee + next[1]; 
+                    int skip = 0 + next[0]; 
                     
                     profit = max(sell,skip);
                 } 
                 
-                dp[index][buy] = profit;
+                curr[buy] = profit;
                 
             } 
-            
+            next = curr;
         } 
-        return dp[0][1];
+        return next[1];
     }
     
     
@@ -69,6 +71,6 @@ public:
         //int n = prices.size();
         //vector<vector<int>> dp(n+1,vector<int>(2,-1)); 
         
-        return solveTab(prices,fee);
+        return solveTabSO(prices,fee);
     }
 };
