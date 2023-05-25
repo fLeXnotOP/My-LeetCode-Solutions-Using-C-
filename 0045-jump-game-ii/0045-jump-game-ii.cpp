@@ -1,24 +1,29 @@
 class Solution {
 public:
- 
-   long long int jump(vector<int> &nums , int curr, int dest,vector<int> &dp)
-    {       
-            if(curr==dest) return 0;
-            if(dp[curr]!=-1) return dp[curr];
-            //cout<<curr<<" ";
-            long long int tmp=INT_MAX;
-     
-            for(int i=1;i<=nums[curr];i++)
-            {  
-                if(i+curr>dest) break;
-                tmp=min(tmp,1+jump(nums,curr+i,dest,dp));  
-            }
-         dp[curr]=tmp;
-         return tmp;  
-    }
-    
     int jump(vector<int>& nums) {
-         vector<int> dp(nums.size(),-1);
-         return jump(nums,0,nums.size()-1,dp);
+        
+        if(nums.size()<2) return 0;   //base case
+        
+        //initialize jump=1 , we are taking jump from 0th index to the range mxjump
+        //currjump, we can take jump from particular  index
+		//mxjump , we cango up to maximum
+		// jump to count no. of jump
+        int jump=1,n=nums.size(),currjmp=nums[0],mxjmp=nums[0];
+        
+        int i=0;
+		
+		//till we reach last index, NOTE: Not necessary to cross last index
+        while(i<n-1)
+        {
+            mxjmp=max(mxjmp,i+nums[i]);
+             
+            if(currjmp==i) //we have to take jump now because our currjump now ends.
+            {
+                jump++;//increment in jump
+                currjmp=mxjmp; //assign new maxjmp to currjmp
+            }
+            i++;
+        }
+        return jump;
     }
 };
