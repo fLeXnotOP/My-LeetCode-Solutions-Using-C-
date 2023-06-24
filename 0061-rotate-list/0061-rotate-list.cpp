@@ -14,35 +14,34 @@ public:
 
     
     
-    ListNode* rotateRight(ListNode* head, int k) {  
+ ListNode *rotateRight(ListNode *head, int k) 
+     {
+        if(head == NULL || head->next == NULL||k==0) return head;
         
-        if(head==NULL || head->next==NULL || k==0){
-            return head;
-        }
-        ListNode* tail = head; 
+        ListNode* node = head;
+        int size =1;
         
-        int len=1;  
-        
-        while(tail->next!=NULL){
-            tail=tail->next; 
-            len++;
-        }  
-        
-        tail->next=head;
-        
-        int headIndex = len - k % len; 
-        
-        for(int i=0;i<headIndex;i++){
-            tail=tail->next;
+        while(node->next != NULL)
+        {
+            size++;
+            node = node->next;
         }
         
-        head = tail->next; 
-        tail->next=NULL; 
+        //loop the list
+        node->next=head;
         
-        return head;
+        //handle the case of k>size
+        k = k%size;
         
+        //find the node to break the loop at
+        while(--size >= k)
+        {
+            node=node->next;
+        }
         
+        ListNode* first = node->next;
+        node->next=NULL;
         
-
+        return first;
     }
 };
