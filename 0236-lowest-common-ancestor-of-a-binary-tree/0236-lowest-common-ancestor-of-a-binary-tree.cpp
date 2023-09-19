@@ -19,6 +19,10 @@
     
          if(left!=NULL and right!=NULL) return root;
     
-         return left!=NULL? left : right;
+         if(left!=NULL){
+             return left;
+         } 
+         
+         return right;
      }
  };
