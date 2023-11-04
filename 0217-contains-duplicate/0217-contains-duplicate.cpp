@@ -5,16 +5,18 @@ public:
         
         
         for(int i=0;i<nums.size();i++){
-            mp[nums[i]]++;
-        } 
-        
-        
-        for(int i=0;i<nums.size();i++){
-            if(mp[nums[i]]>=2){
+            if(mp.find(nums[i])!=mp.end()){
                 return true;
+            } 
+            
+            else{
+                mp[nums[i]]++;
             }
-        }
+        }  
         
         return false;
+        
+        
+
     }
 };
