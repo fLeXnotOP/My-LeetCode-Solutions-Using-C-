@@ -1,36 +1,32 @@
 class Solution {
 public:
-    vector<int> restoreArray(vector<vector<int>>& adjacentPairs) { 
-        unordered_map<int,vector<int>> mp; 
-        
-        for(auto p:adjacentPairs){
-            mp[p[0]].push_back(p[1]); 
-            mp[p[1]].push_back(p[0]);
-        } 
-        
+    void dfs(unordered_map<int,vector<int>> &mp, unordered_map<int,bool> &visited, int sv, vector<int> &ans){
+        for(auto x:mp[sv]){
+            if(!visited[x]){
+                visited[x]=true;
+                ans.push_back(x);
+                dfs(mp,visited,x,ans);
+            }
+        }
+    }
+    vector<int> restoreArray(vector<vector<int>>& adjacentPairs) {
         vector<int> ans;
-        for(auto node : mp){
-            if(node.second.size()==1){
-                ans.push_back(node.first); 
-                ans.push_back(node.second[0]); 
+        unordered_map<int,bool> visited;
+        unordered_map<int,vector<int>> mp;
+        for(auto x:adjacentPairs){
+            mp[x[0]].push_back(x[1]);
+            mp[x[1]].push_back(x[0]);
+        }
+        int start_node;
+        for(auto x:mp){
+            if(x.second.size()==1){
+                start_node=x.first;
                 break;
             }
-        } 
-        
-        while(ans.size()<mp.size()){
-            int lastElement = ans[ans.size()-1]; 
-            int secondLast = ans[ans.size()-2]; 
-            
-            vector<int> neighbours = mp[lastElement]; 
-            
-            if(neighbours[0]!=secondLast){
-                ans.push_back(neighbours[0]);
-            } 
-            else{
-                ans.push_back(neighbours[1]);
-            }
-        } 
-        
+        }
+        visited[start_node]=true;
+        ans.push_back(start_node);
+        dfs(mp,visited,start_node,ans);
         return ans;
     }
 };
