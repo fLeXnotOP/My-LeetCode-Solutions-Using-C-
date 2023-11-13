@@ -1,27 +1,53 @@
 class Solution {
-public:
-    string sortVowels(string s) {
-        string ans="", vowel="";
-
-        for(auto x:s){
-            if(x=='A'||x=='E'||x=='O'||x=='U'||x=='I'||x=='a'||x=='e'||x=='i'||x=='o'||x=='u'){
-                vowel += x;
-            }
-        }
-        // cout<<vowel<<endl;
-        sort(vowel.begin(),vowel.end());
-        // cout<<vowel<<endl;
-        int i=0, n=s.size();
+public: 
+    
+    bool isVowel(char c){
         
-        for(int j=0;j<n;j++){
-            if(s[j]=='A'||s[j]=='E'||s[j]=='O'||s[j]=='U'||s[j]=='I'||s[j]=='a'||s[j]=='e'||s[j]=='i'||s[j]=='o'||s[j]=='u'){
-                ans.push_back(vowel[i]);
-                i++;
+        return (c=='A' || c=='E' || c=='I' || c=='O' || c=='U' || c=='a' || c=='e' || c=='i' || c=='o' || c=='u');
+    }
+    
+    
+    
+    string sortVowels(string s) { 
+        
+        unordered_map<char,int> frequency; 
+        
+        
+        for(auto c : s){
+            
+            if(isVowel(c)){
+                frequency[c]++;
             }
+        }  
+        
+        string vowels="AEIOUaeiou"; 
+        string ans=s; 
+        
+        int j=0; 
+        
+        
+        for(int i=0;i<s.size();i++){
+            
+            if(!isVowel(s[i])){
+                continue;
+            }  
+            
             else{
-                ans.push_back(s[j]);
+                while(frequency[vowels[j]]==0){
+                    j++;
+                } 
+                
+                ans[i] = vowels[j]; 
+                frequency[vowels[j]]--;
             }
-        }
+            
+            
+        } 
+        
+        
         return ans;
+        
+        
+
     }
 };
